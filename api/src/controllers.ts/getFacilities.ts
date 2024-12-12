@@ -1,13 +1,11 @@
-import { neon } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-http';
 import { facilities } from '../db/schema';
 import { Context } from 'hono';
+import getDb from '../db/getDb';
 
 const getFacilities = async (c: Context) => {
-	const sql = neon(c.env.DATABASE_URL);
-	const db = drizzle(sql);
-
+	const db = getDb(c.env.DATABASE_URL);
 	const allFacilities = await db.select().from(facilities);
+
 	return c.json(allFacilities);
 };
 

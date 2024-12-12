@@ -6,6 +6,9 @@ compatibility_flags = ["nodejs_compat"]
 [observability]
 enabled = true
 
+[vars]
+BUCKET_URL = "https://pub-51bc441b59544a1c9752451533cf30ff.r2.dev"
+
 [[r2_buckets]]
 binding = "UPLOAD_BUCKET"
 bucket_name = "upload-bucket"
