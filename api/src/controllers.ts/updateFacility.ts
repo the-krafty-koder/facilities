@@ -8,7 +8,7 @@ const updateFacility = async (c: Context) => {
 	const db = getDb(c.env.DATABASE_URL);
 	const id = Number(c.req.param('id'));
 
-	const values = await c.req.json<Facility>();
+	const values = c.req.valid('json' as never);
 	const facility = await db.update(facilities).set(values).where(eq(facilities.id, id)).returning();
 
 	return c.json(facility);
