@@ -1,6 +1,7 @@
 export type Facility = {
 	id: number;
 	name: string;
+	type: string;
 	streetAddress: string;
 	city: string;
 	state: string;

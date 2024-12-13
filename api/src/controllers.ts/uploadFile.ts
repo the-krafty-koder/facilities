@@ -8,6 +8,8 @@ const uploadFile = async (c: Context) => {
 		await c.env.UPLOAD_BUCKET.put(file.name, file);
 		return c.json({ filePath: `${c.env.BUCKET_URL}/${file.name}` });
 	}
+
+	return c.json({ message: 'Upload failed' });
 };
 
 export default uploadFile;

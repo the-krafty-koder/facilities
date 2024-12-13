@@ -16,9 +16,17 @@ export type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-app.use('/facilities/*', cors());
+app.use(
+	cors({
+		origin: '*', // Allow all origins, replace with specific origin if needed
+		allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow specific methods
+		allowHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
+	})
+);
+
 const validationSchema = z.object({
 	name: z.string(),
+	type: z.string(),
 	streetAddress: z.string(),
 	city: z.string(),
 	state: z.string(),

@@ -1,0 +1,48 @@
+.header {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.details {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.seperator {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.detailsLink {
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+.container {
+  padding: 40px;
+}
+
+.information {
+  font-weight: bold;
+}
+
+.imageContainer {
+  width: 200px;
+  height: 200px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.image {
+  object-fit: contain;
+  height: 100%;
+  width: 100%;
+}
+
+.paperContainer {
+  padding: 15px;
+  width: 80vw;
+}
