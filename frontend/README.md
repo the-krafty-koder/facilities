@@ -1,6 +1,6 @@
 ## Getting Started
 
-This is the facilities app. Youll need an internet connection to access the backend api. Follow the steps below to get it working. (I built it on Mac so there may be tiny differences for other platforms.)
+This is the facilities app. Youll need an internet connection to access the backend api that's hosted on a cloudlare worker. Follow the steps below to get it working. (I built it on Mac so there may be tiny differences for other platforms.)
 
 First clone the repository
 
