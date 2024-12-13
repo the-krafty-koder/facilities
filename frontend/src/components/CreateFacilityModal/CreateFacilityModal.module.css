@@ -36,3 +36,8 @@
   height: 80%;
   overflow: scroll;
 }
+
+.formHelperText {
+  color: red;
+  margin-left: 10px;
+}

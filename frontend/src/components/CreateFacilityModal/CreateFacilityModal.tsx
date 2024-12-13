@@ -10,10 +10,12 @@ import {
   Select,
   MenuItem,
   InputLabel,
+  FormHelperText,
 } from "@mui/material";
 import { useFacilitiesStore } from "../../store/facilitiesStore";
 import { Facility } from "../../types";
 import styles from "./CreateFacilityModal.module.css";
+import { z } from "zod";
 
 interface CreateFacilityModalProps {
   open: boolean;
@@ -21,7 +23,7 @@ interface CreateFacilityModalProps {
 }
 
 const modalStyle = {
-  position: "absolute" as "absolute",
+  position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
@@ -34,11 +36,39 @@ const modalStyle = {
   overflow: "scroll",
 };
 
+const facilityTypes = [
+  "Manufacturing Plants",
+  "Warehouses",
+  "Distribution Centers",
+  "Research and Development Centers",
+  "Maintenance and Repair Facilities",
+  "Logistics Hubs",
+  "Quality Control Laboratories",
+  "Refineries",
+  "Energy Plants",
+  "Water Treatment Plants",
+  "Smelting and Refining Facilities",
+  "Chemical Processing Plants",
+  "Assembly Plants",
+];
+const validationSchema = z.object({
+  name: z.string().nonempty(),
+  type: z
+    .string()
+    .nonempty({ message: "You must select one option from the dropdown" }),
+  streetAddress: z.string().nonempty(),
+  city: z.string().nonempty(),
+  state: z.string().nonempty(),
+  zipCode: z.string().nonempty(),
+  phoneNumber: z.string().nonempty(),
+  siteLeader: z.string().optional(),
+});
+
 export default function CreateFacilityModal({
   open,
   onClose,
 }: CreateFacilityModalProps) {
-  const [facilityData, setFacilityData] = useState<Facility>({
+  const emptyFacility = {
     name: "",
     type: "",
     streetAddress: "",
@@ -47,23 +77,31 @@ export default function CreateFacilityModal({
     zipCode: "",
     phoneNumber: "",
     siteLeader: "",
-  });
+  };
+  const [facilityData, setFacilityData] = useState<Facility>(emptyFacility);
+  const emptyErrors = {
+    name: [],
+    type: [],
+    streetAddress: [],
+    city: [],
+    state: [],
+    zipCode: [],
+    phoneNumber: [],
+    siteLeader: [],
+  };
+  const [validationErrors, setValidationErrors] = useState<{
+    name?: string[];
+    type?: string[];
+    streetAddress?: string[];
+    city?: string[];
+    state?: string[];
+    zipCode?: string[];
+    phoneNumber?: string[];
+    siteLeader?: string[];
+    imageUrl?: string[];
+  }>(emptyErrors);
+
   const [image, setImage] = useState<File | null>(null);
-  const types = [
-    "Manufacturing Plants",
-    "Warehouses",
-    "Distribution Centers",
-    "Research and Development Centers",
-    "Maintenance and Repair Facilities",
-    "Logistics Hubs",
-    "Quality Control Laboratories",
-    "Refineries",
-    "Energy Plants",
-    "Water Treatment Plants",
-    "Smelting and Refining Facilities",
-    "Chemical Processing Plants",
-    "Assembly Plants",
-  ];
 
   const createFacility = useFacilitiesStore(
     (state) => state.createFacilityState
@@ -81,19 +119,26 @@ export default function CreateFacilityModal({
     };
 
   const handleCreate = async () => {
-    await createFacility({ ...facilityData, image });
-    onClose();
-    setFacilityData({
-      name: "",
-      type: "",
-      streetAddress: "",
-      city: "",
-      state: "",
-      zipCode: "",
-      phoneNumber: "",
-      siteLeader: "",
-    });
-    setImage(null);
+    const validation = validationSchema.safeParse(facilityData);
+    if (validation.success) {
+      await createFacility({ ...facilityData, image });
+      setFacilityData({
+        name: "",
+        type: "",
+        streetAddress: "",
+        city: "",
+        state: "",
+        zipCode: "",
+        phoneNumber: "",
+        siteLeader: "",
+      });
+      setImage(null);
+      setValidationErrors(emptyErrors);
+      onClose();
+    } else {
+      const errors = validation.error.flatten().fieldErrors;
+      setValidationErrors(errors);
+    }
   };
 
   return (
@@ -121,23 +166,35 @@ export default function CreateFacilityModal({
             margin="normal"
             value={facilityData.name}
             onChange={handleChange("name")}
+            required
+            error={validationErrors.name?.length !== 0}
+            helperText={validationErrors.name?.[0]}
           />
           <InputLabel className={styles.inputLabel}>Type</InputLabel>
           <Select
-            id="demo-simple-select-label"
             value={facilityData.type}
             onChange={(event) =>
               setFacilityData({ ...facilityData, type: event.target.value })
             }
             label="Type"
             fullWidth
+            required
+            error={validationErrors.type?.length !== 0}
           >
-            {types.map((type) => (
-              <MenuItem key={type} value={type}>
-                {type}
+            {facilityTypes.map((facilityType) => (
+              <MenuItem key={facilityType} value={facilityType}>
+                {facilityType}
               </MenuItem>
             ))}
           </Select>
+          {validationErrors.type?.[0] && (
+            <FormHelperText color="error">
+              <span className={styles.formHelperText}>
+                {validationErrors.type?.[0]}
+              </span>
+            </FormHelperText>
+          )}
+
           <TextField
             label="Street Address"
             fullWidth
@@ -145,6 +202,8 @@ export default function CreateFacilityModal({
             value={facilityData.streetAddress}
             onChange={handleChange("streetAddress")}
             required
+            error={validationErrors.streetAddress?.length !== 0}
+            helperText={validationErrors.streetAddress?.[0]}
           />
           <TextField
             label="City"
@@ -153,6 +212,8 @@ export default function CreateFacilityModal({
             value={facilityData.city}
             onChange={handleChange("city")}
             required
+            error={validationErrors.city?.length !== 0}
+            helperText={validationErrors.city?.[0]}
           />
           <TextField
             label="State"
@@ -161,6 +222,8 @@ export default function CreateFacilityModal({
             value={facilityData.state}
             onChange={handleChange("state")}
             required
+            error={validationErrors.state?.length !== 0}
+            helperText={validationErrors.state?.[0]}
           />
           <TextField
             label="Zip Code"
@@ -169,6 +232,8 @@ export default function CreateFacilityModal({
             value={facilityData.zipCode}
             onChange={handleChange("zipCode")}
             required
+            error={validationErrors.zipCode?.length !== 0}
+            helperText={validationErrors.zipCode?.[0]}
           />
           <TextField
             label="Phone Number"
@@ -177,6 +242,8 @@ export default function CreateFacilityModal({
             value={facilityData.phoneNumber}
             onChange={handleChange("phoneNumber")}
             required
+            error={validationErrors.phoneNumber?.length !== 0}
+            helperText={validationErrors.phoneNumber?.[0]}
           />
           <TextField
             label="Site Leader"
@@ -184,11 +251,17 @@ export default function CreateFacilityModal({
             margin="normal"
             value={facilityData.siteLeader}
             onChange={handleChange("siteLeader")}
+            error={validationErrors.siteLeader?.length! > 0}
+            helperText={validationErrors.siteLeader?.[0]}
           />
 
           <Box className={styles.modalFooter}>
             <Button
-              onClick={onClose}
+              onClick={() => {
+                setValidationErrors(emptyErrors);
+                setFacilityData(emptyFacility);
+                onClose();
+              }}
               color="secondary"
               className={styles.cancelButton}
             >

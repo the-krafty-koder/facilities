@@ -25,15 +25,14 @@ app.use(
 );
 
 const validationSchema = z.object({
-	name: z.string(),
-	type: z.string(),
-	streetAddress: z.string(),
-	city: z.string(),
-	state: z.string(),
-	zipCode: z.string(),
-	phoneNumber: z.string(),
+	name: z.string().nonempty(),
+	type: z.string().nonempty(),
+	streetAddress: z.string().nonempty(),
+	city: z.string().nonempty(),
+	state: z.string().nonempty(),
+	zipCode: z.string().nonempty(),
+	phoneNumber: z.string().nonempty(),
 	siteLeader: z.string().optional(),
-	imageUrl: z.string().optional(),
 });
 
 app.get('/facilities', getFacilities);

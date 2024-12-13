@@ -14,7 +14,6 @@ import {
   Menu,
   MenuItem,
   Box,
-  Stack,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useFacilitiesStore } from "../../store/facilitiesStore";
@@ -64,7 +63,7 @@ const FacilityList = () => {
 
   useEffect(() => {
     fetchFacilities();
-  }, []);
+  }, [fetchFacilities]);
 
   return (
     <Box className={styles.table}>
@@ -127,13 +126,17 @@ const FacilityList = () => {
                   </Menu>
                 </TableCell>
                 <TableCell>
-                  <div className={styles.imageContainer}>
-                    <img
-                      src={facility.imageUrl}
-                      alt={facility.name}
-                      className={styles.facilityImage}
-                    />
-                  </div>
+                  {facility.imageUrl ? (
+                    <div className={styles.imageContainer}>
+                      <img
+                        src={facility.imageUrl}
+                        alt={facility.name}
+                        className={styles.facilityImage}
+                      />
+                    </div>
+                  ) : (
+                    <span> No image</span>
+                  )}
                 </TableCell>
                 <TableCell>{facility.name}</TableCell>
                 <TableCell>{facility.type}</TableCell>

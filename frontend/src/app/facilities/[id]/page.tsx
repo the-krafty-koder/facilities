@@ -33,11 +33,15 @@ const FacilityDetails = () => {
         </Typography>
 
         <Box className={styles.imageContainer}>
-          <img
-            src={facility.imageUrl}
-            alt={facility.name}
-            className={styles.image}
-          />
+          {facility.imageUrl ? (
+            <img
+              src={facility.imageUrl}
+              alt={facility.name}
+              className={styles.image}
+            />
+          ) : (
+            <span> No image uploaded</span>
+          )}
         </Box>
         <Stack spacing={3}>
           <Box>
