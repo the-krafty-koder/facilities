@@ -95,6 +95,7 @@ const FacilityList = () => {
               <TableCell>Site leader</TableCell>
             </TableRow>
           </TableHead>
+
           <TableBody>
             {facilities.map((facility) => (
               <TableRow

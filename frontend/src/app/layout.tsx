@@ -13,6 +13,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <title>Facilities</title>
+      </head>
       <body className={montserrat.variable}>{children}</body>
     </html>
   );

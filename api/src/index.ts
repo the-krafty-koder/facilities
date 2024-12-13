@@ -33,6 +33,7 @@ const validationSchema = z.object({
 	zipCode: z.string().nonempty(),
 	phoneNumber: z.string().nonempty(),
 	siteLeader: z.string().optional(),
+	imageUrl: z.string().optional(),
 });
 
 app.get('/facilities', getFacilities);
