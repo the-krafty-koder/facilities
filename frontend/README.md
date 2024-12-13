@@ -1,5 +1,7 @@
 ## Getting Started
 
+This is the facilities app. Youll need an internet connection to access the backend api. Follow the steps below to get it working. (I built it on Mac so there may be tiny differences for other platforms.)
+
 First clone the repository
 
 ```bash
@@ -15,7 +17,7 @@ cd frontend
 Install dependencies
 
 ```bash
-npm install
+npm i
 ```
 
 Run the development server:
